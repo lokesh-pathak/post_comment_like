@@ -1,0 +1,7 @@
+
+	<form method="POST" action='/question/{{post_id}}/comment/'>
+        {% csrf_token %}
+        <input type="hidden" name="post_id" value="{{post_id}}">
+        {{ form.as_p }}
+    	<input type="submit" value="Submit">
+    </form>

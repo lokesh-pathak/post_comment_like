@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+    <form id="demo-form" action="/" method="POST" novalidate>
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-8">
+                <label>Question Title * :</label>
+                {{form.title}}
+            </div>
+            <div class="col-md-12 mt-10 mb-30">
+                <label>Description * :</label>
+                {{form.text}}
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary save-button">Save</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+  <a href="{% url 'question_form' %}" >Create New</a> &nbsp &nbsp
+  <a href="{% url 'logout' %}">Logout</a>
+  {% if questions %}
+    {% for question in questions%}
+      <div>
+        <h4>Title: {{ question.title }}</h4>
+        <p>Description:  {{ question.text }}</p>
+        {%if question.comment_set.all%}
+          {% for comment in question.comment_set.all%}
+              <p>Comments:  {{ comment.text }}</p>
+              <span>Total Likes: {{ comment.like_set.count}}</span> <button type="button" class="btn btn-primary like-btn" data-url= '/comment/{{ comment.id }}/like/'>Like</button></br></br>
+          {% endfor %}
+        {%endif%}
+        <button type="button" class="btn btn-primary comment-btn" data-url= '/question/{{ question.id }}/comment/'>Comment</button>
+        <div id="comment-form"></div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <div>
+      <h4>No result found</h4>
+    </div>
+  {% endif %}
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+   
+  $(document.body).on('click', '.comment-btn' ,function(event){
+      event.preventDefault(); //prevent default action 
+      $.ajax({
+          url : $(this).attr('data-url'),
+          type : 'GET',
+      }).done(function(data){ //
+          $('#comment-form').children().remove()
+          $('#comment-form').append(data.comments_html);
+      });
+  })
+  $(document.body).on('click', '.like-btn' ,function(event){
+      event.preventDefault(); //prevent default action 
+      $.ajax({
+          url : $(this).attr('data-url'),
+          type : 'GET',
+      }).done(function(data){ //
+          $('#comment-form').children().remove()
+          $('#comment-form').append(data.comments_html);
+      });
+  })
+</script>
+
+{% endblock %}
